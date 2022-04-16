@@ -1,0 +1,13 @@
+name: Export the audit log of the code
+
+on:
+  workflow_dispatch: # run on demand
+  release:
+    types: [published] # run on published release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # use the GitHub hosted runners
+    steps:
+      - name: Upload the audit log
+        uses: some-natalie/gitlog-to-csv@v1
