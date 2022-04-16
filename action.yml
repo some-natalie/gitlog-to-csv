@@ -1,5 +1,10 @@
 name: "git-log to CSV"
 description: "Export a CSV of the history of the main branch"
+author: "Natalie Somersall (@some-natalie)"
+branding:
+  color: purple
+  icon: file-text
+
 inputs:
   repository:
     description: "The repository to audit"
