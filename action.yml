@@ -1,0 +1,38 @@
+name: "git-log to CSV"
+description: "Export a CSV of the history of the main branch"
+inputs:
+  repository:
+    description: "The repository to audit"
+    required: true
+    default: "{{ github.repository }}"
+  branch:
+    description: "The branch to audit"
+    required: true
+    default: "main"
+runs:
+  using: "composite"
+  steps:
+    - name: "Checkout the repo"
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ inputs.repository }}
+        fetch-depth: 0
+    - name: "Make a CSV file out of the git log"
+      shell: bash
+      run: |
+        COMMIT_URL="${{ github.server_url }}/${{ inputs.repository }}/commit/"
+        git log ${{ inputs.branch }} --date=local --pretty="%x40%H%x2C%h%x2C%an%x2C%G?%x2C%GS%x2C%GK%x2C%ad%x2C%x22%s%x22%x2C" --shortstat | tr "\n" " " | tr "@" "\n" >> log.csv
+        sed -n 's/ files changed//g' log.csv
+        sed -n 's/ file changed//g' log.csv
+        sed -n 's/ insertions(+)//g' log.csv
+        sed -n 's/ insertion(+)//g' log.csv
+        sed -n 's/ deletions(-)//g' log.csv
+        sed -n 's/ deletion(-)//g' log.csv
+        awk -F"," 'OFS = ", " {$1 = "'"$COMMIT_URL"'"$1; print}' log.csv > history.csv
+        sed -i.bak '1s/.*/url,commit id,author,commit signature status,name of signer,key used to sign,date,comment,changed files,lines added,lines deleted/' history.csv
+    - name: "Upload that CSV file"
+      uses: actions/upload-artifact@v3
+      with:
+        name: "git-audit-log"
+        path: "history.csv"
+        if-no-files-found: error
