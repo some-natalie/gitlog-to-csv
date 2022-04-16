@@ -9,7 +9,7 @@ inputs:
   repository:
     description: "The repository to audit"
     required: true
-    default: "{{ github.repository }}"
+    default: ${{ github.repository }}
   branch:
     description: "The branch to audit"
     required: true
