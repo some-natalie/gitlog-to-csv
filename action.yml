@@ -14,6 +14,15 @@ inputs:
     description: "The branch to audit"
     required: true
     default: "main"
+  gpg:
+    description: "Report git commit signing (GPG) signatures, set to 'true' to enable"
+    required: false
+    default: "false"
+  token:
+    description: "GitHub token to use if not running on the current repository"
+    required: false
+    default: ${{ github.token }}
+
 runs:
   using: "composite"
   steps:
@@ -21,20 +30,38 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: ${{ inputs.repository }}
+        token: ${{ inputs.token }}
         fetch-depth: 0
     - name: "Make a CSV file out of the git log"
       shell: bash
       run: |
+        # set the commit URL
         COMMIT_URL="${{ github.server_url }}/${{ inputs.repository }}/commit/"
-        git log ${{ inputs.branch }} --date=local --pretty="%x40%H%x2C%h%x2C%an%x2C%G?%x2C%GS%x2C%GK%x2C%ad%x2C%x22%s%x22%x2C" --shortstat | tr "\n" " " | tr "@" "\n" >> log.csv
-        sed -n 's/ files changed//g' log.csv
-        sed -n 's/ file changed//g' log.csv
-        sed -n 's/ insertions(+)//g' log.csv
-        sed -n 's/ insertion(+)//g' log.csv
-        sed -n 's/ deletions(-)//g' log.csv
-        sed -n 's/ deletion(-)//g' log.csv
+
+        # git log print
+        if [ ${{ inputs.gpg }} = "true" ]; then
+          git log ${{ inputs.branch }} --date=local --pretty="%x40%H%x2C%h%x2C%an%x2C%G?%x2C%GS%x2C%GK%x2C%ad%x2C%x22%s%x22%x2C" --shortstat | tr "\n" " " | tr "@" "\n" >> log.csv
+        else
+          git log ${{ inputs.branch }} --date=local --pretty="%x40%H%x2C%h%x2C%an%x2C%ad%x2C%x22%s%x22%x2C" --shortstat | tr "\n" " " | tr "@" "\n" >> log.csv
+        fi
+
+        # sed magics
+        sed -i.bak 's/ files changed//g' log.csv
+        sed -i.bak 's/ file changed//g' log.csv
+        sed -i.bak 's/ insertions(+)//g' log.csv
+        sed -i.bak 's/ insertion(+)//g' log.csv
+        sed -i.bak 's/ deletions(-)//g' log.csv
+        sed -i.bak 's/ deletion(-)//g' log.csv
+
+        # add in the url to see the detailed commit with awk
         awk -F"," 'OFS = ", " {$1 = "'"$COMMIT_URL"'"$1; print}' log.csv > history.csv
-        sed -i.bak '1s/.*/url,commit id,author,commit signature status,name of signer,key used to sign,date,comment,changed files,lines added,lines deleted/' history.csv
+
+        # add the header line in
+        if [ ${{ inputs.gpg }} = "true" ]; then
+          sed -i.bak '1s/.*/url,commit id,author,commit signature status,name of signer,key used to sign,date,comment,changed files,lines added,lines deleted/' history.csv
+        else
+          sed -i.bak '1s/.*/url,commit id,author,date,comment,changed files,lines added,lines deleted/' history.csv
+        fi
     - name: "Upload that CSV file"
       uses: actions/upload-artifact@v3
       with:

@@ -4,7 +4,12 @@ Creates a CSV file of some `git log` data, useful for exporting to audit reports
 
 ## Inputs and Outputs
 
-Input the repository and branch name you want the history of.  It'll default to the current repository and the "main" branch if not set.
+Inputs
+
+- Repository name (defaults to the current repository)
+- Branch name (defaults to "main")
+- Whether the GPG commit signing info should be included (defaults to "false")
+- GitHub PAT token to use (defaults to the included `github.token`, only needed if the repository name isn't the current one)
 
 It'll output a CSV file, zipped and uploaded as an artifact on that workflow run.  Artifact storage has a limited timeframe, so you may need to download it and move it into another business system (either automatically or manually) depending on your needs.  Here's what it'll return:
 
@@ -15,7 +20,7 @@ It'll output a CSV file, zipped and uploaded as an artifact on that workflow run
 | author | Commit author |
 | commit signature status | GPG commit signature status ([docs](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work)) |
 | name of signer | Name on the GPG key |
-| key used to sign | Key used to sign |
+| key used to sign | GPG key used to sign |
 | date | Date on the commit |
 | comment | Comment (short, not full) on the commit |
 | changed files | Number of files changed in this commit |
