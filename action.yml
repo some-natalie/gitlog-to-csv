@@ -70,7 +70,7 @@ runs:
         awk -F"," 'OFS = ", " {$1 = "'"$COMMIT_URL"'"$1; print}' log.csv > history.csv
 
         # add the header line in
-        if [ ${{ inputs.gpg }} = "true" ]; then
+        if [ ${{ inputs.gpg }} = true ]; then
           sed -i.bak '1s/.*/url,commit id,author,commit signature status,name of signer,key used to sign,date,comment,changed files,lines added,lines deleted/' history.csv
         else
           sed -i.bak '1s/.*/url,commit id,author,date,comment,changed files,lines added,lines deleted/' history.csv
