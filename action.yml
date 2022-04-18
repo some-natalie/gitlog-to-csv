@@ -59,6 +59,10 @@ runs:
 
         # download diffs if needed
         if [ ${{ inputs.include_diffs }} = "true" ]; then
+            sed -i.bak -e "1d" log.csv
+            initial_commit_id=$(git rev-list --max-parents=0 HEAD)
+            initial_commit_short_id=$(git rev-list --max-parents=0 HEAD | cut -c 1-7)
+            git show "$initial_commit_id" > "$initial_commit_short_id".diff
             while read -r line; do
                 commit_id=$(echo "$line" | awk -F"," '{print $1}')
                 short_commit_id=$(echo "$line" | awk -F"," '{print $2}')
