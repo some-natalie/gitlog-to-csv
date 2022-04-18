@@ -43,7 +43,7 @@ runs:
         COMMIT_URL="${{ github.server_url }}/${{ inputs.repository }}/commit/"
 
         # git log print
-        if [ ${{ inputs.gpg }} = "true" ]; then
+        if [ ${{ inputs.gpg }} = true ]; then
           git log ${{ inputs.branch }} --date=local --pretty="%x40%H%x2C%h%x2C%an%x2C%G?%x2C%GS%x2C%GK%x2C%ad%x2C%x22%s%x22%x2C" --shortstat | tr "\n" " " | tr "@" "\n" >> log.csv
         else
           git log ${{ inputs.branch }} --date=local --pretty="%x40%H%x2C%h%x2C%an%x2C%ad%x2C%x22%s%x22%x2C" --shortstat | tr "\n" " " | tr "@" "\n" >> log.csv
@@ -58,7 +58,7 @@ runs:
         sed -i.bak 's/ deletion(-)//g' log.csv
 
         # download diffs if needed
-        if [ ${{ inputs.include_diffs }} = "true" ]; then
+        if [ ${{ inputs.include_diffs }} = true ]; then
             while read -r line; do
                 commit_id=$(echo "$line" | awk -F"," '{print $1}')
                 short_commit_id=$(echo "$line" | awk -F"," '{print $2}')
