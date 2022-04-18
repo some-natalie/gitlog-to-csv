@@ -10,8 +10,9 @@ Inputs
 - Branch name (defaults to "main")
 - Whether the GPG commit signing info should be included (defaults to "false")
 - GitHub PAT token to use (defaults to the included `github.token`, only needed if the repository name isn't the current one)
+- Whether to also generate diff files for each commit and include them in the zip archive (defaults to "false")
 
-It'll output a CSV file, zipped and uploaded as an artifact on that workflow run.  Artifact storage has a limited timeframe, so you may need to download it and move it into another business system (either automatically or manually) depending on your needs.  Here's what it'll return:
+It'll output a CSV file, zipped and uploaded as an artifact on that workflow run.  If the diff file option is also set to true, it'll include all of those diffs as well.  Artifact storage has a limited timeframe, so you may need to download it and move it into another business system (either automatically or manually) depending on your needs.  Here's what it'll return:
 
 | Header | Description |
 | --- | --- |
