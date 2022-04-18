@@ -13,7 +13,7 @@ jobs:
           repository: ${{ github.repository }} # run in the current repository
           branch: "main" # set this to the branch you want to audit
           gpg: "true" # include columns on GPG commit signing
-          include_diffs: "true" # include detailed diffs on each commit
+          include_diffs: "false" # include detailed diffs on each commit
           token: ${{ github.token }} # use the default runtime token
 
 # If you want another repository, set `repository` to "ownername/reponame" and
