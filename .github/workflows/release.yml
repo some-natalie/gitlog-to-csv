@@ -9,3 +9,9 @@ jobs:
     steps:
       - name: Upload the audit log
         uses: some-natalie/gitlog-to-csv@v1
+        with:
+          repository: ${{ github.repository }}
+          branch: ${{ github.ref }}
+          gpg: "true"
+          include_diffs: "true"
+          token: ${{ github.token }}
