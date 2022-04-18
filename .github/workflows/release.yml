@@ -1,4 +1,4 @@
-name: Export the audit log of the code
+name: Export audit log
 
 on:
   workflow_dispatch: # run on demand
@@ -10,8 +10,13 @@ jobs:
       - name: Upload the audit log
         uses: some-natalie/gitlog-to-csv@v1
         with:
-          repository: ${{ github.repository }}
-          branch: ${{ github.ref }}
-          gpg: "true"
-          include_diffs: "true"
-          token: ${{ github.token }}
+          repository: ${{ github.repository }} # run in the current repository
+          branch: "main" # set this to the branch you want to audit
+          gpg: "true" # include columns on GPG commit signing
+          include_diffs: "true" # include detailed diffs on each commit
+          token: ${{ github.token }} # use the default runtime token
+
+# If you want another repository, set `repository` to "ownername/reponame" and
+# the `token` to a GitHub PAT as a secret that has read access to that repo.
+# For running in the current repository, this is the minimum permissions needed
+# to run.
