@@ -12,7 +12,7 @@ Inputs
 - GitHub PAT token to use (defaults to the included `github.token`, only needed if the repository name isn't the current one)
 - Whether to also generate diff files for each commit and include them in the zip archive (defaults to "false")
 
-It'll output a CSV file, zipped and uploaded as an artifact on that workflow run.  If the diff file option is also set to true, it'll include all of those diffs as well.  Artifact storage has a limited timeframe, so you may need to download it and move it into another business system (either automatically or manually) depending on your needs.  Here's what it'll return:
+It'll output a CSV file, zipped and uploaded as an artifact on that workflow run.  If the diff file option is also set to true, it'll include all of those diffs in the zip file as well.  Artifact storage has a limited timeframe, so you may need to download it and move it into another business system (either automatically or manually) depending on your needs.  Here's what it'll return:
 
 | Header | Description |
 | --- | --- |
@@ -62,3 +62,5 @@ Per the [git documentation](https://git-scm.com/docs/git-log#_pretty_formats), t
 Naturally, this works without any hitch on GitHub.com.  As a composite Action that calls other Actions, you'll need to be on at least GitHub Enterprise Server or GitHub AE version 3.3 to use this if you're not in GitHub.com.
 
 :information_source:  This references the tag `v3` of [`actions/checkout`](https://github.com/actions/checkout) and [`actions/upload-artifact`](https://github.com/actions/upload-artifact), which is (currently) beyond the version shipped bundled in GHES and GHAE.  Your enterprise administrator might need to [update](https://docs.github.com/en/enterprise-server@3.4/admin/github-actions/managing-access-to-actions-from-githubcom/using-the-latest-version-of-the-official-bundled-actions) the bundled actions.  Alternatively, you can copy this repository and downgrade the versions of these dependencies.
+
+:question:  Not using or can't use GitHub Actions?  Not a problem - the core logic of this reporting is a simple [bash script](https://github.com/some-natalie/gitlog-to-csv/blob/main/action.yml#L40-L81).
