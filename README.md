@@ -1,6 +1,6 @@
 # gitlog-to-csv Action
 
-Creates a CSV file of some `git log` data, useful for exporting to audit reports and other "chain of custody" type reports.
+Creates a CSV file of some `git log` data, useful for exporting to audit reports and other "chain of custody" type reports.  It can optionally create diffs to show line-by-line and file-by-file what changed at each commit and by whom, as well as if each commit was signed with a GPG certificate.
 
 ## Inputs and Outputs
 
@@ -61,6 +61,17 @@ Per the [git documentation](https://git-scm.com/docs/git-log#_pretty_formats), t
 
 Naturally, this works without any hitch on GitHub.com.  As a composite Action that calls other Actions, you'll need to be on at least GitHub Enterprise Server or GitHub AE version 3.3 to use this if you're not in GitHub.com.
 
-:information_source:  This references the tag `v3` of [`actions/checkout`](https://github.com/actions/checkout) and [`actions/upload-artifact`](https://github.com/actions/upload-artifact), which is (currently) beyond the version shipped bundled in GHES and GHAE.  Your enterprise administrator might need to [update](https://docs.github.com/en/enterprise-server@3.4/admin/github-actions/managing-access-to-actions-from-githubcom/using-the-latest-version-of-the-official-bundled-actions) the bundled actions.  Alternatively, you can copy this repository and downgrade the versions of these dependencies.
+:information_source:  This references the tag `v3` of [`actions/checkout`](https://github.com/actions/checkout) and [`actions/upload-artifact`](https://github.com/actions/upload-artifact), which is (currently) beyond the version shipped bundled in GHES and GHAE.  Your enterprise administrator might need to [update](https://docs.github.com/en/enterprise-server@latest/admin/github-actions/managing-access-to-actions-from-githubcom/using-the-latest-version-of-the-official-bundled-actions) the bundled actions.  Alternatively, you can copy this repository to your GHES or GHAE instance and downgrade the versions of these dependencies in that process.
 
-:question:  Not using or can't use GitHub Actions?  Not a problem - the core logic of this reporting is a simple [bash script](https://github.com/some-natalie/gitlog-to-csv/blob/main/action.yml#L40-L81).
+## Using it without GitHub Actions
+
+:question:  Not using or can't use GitHub Actions?  Not a problem - the core logic of this report is a plain [bash script](https://github.com/some-natalie/gitlog-to-csv/blob/main/action.yml#L40-L81) that you can plug into your CI system of choice or run _ad hoc_.  To run on an arbitrary machine, you'll need the following:
+
+- BASH, of course
+- GNU `awk` and `sed`
+- Git
+- GPG set up and appropriate certificates installed _if_ you want to verify commit signing - sorry this one is kinda vague, but what this looks like will vary widely based on your company's configuration.
+
+## But why, though?
+
+Yes, all of this information is available in `git` because this information is the very _nature_ of version control - but sometimes we all need a checklist or report to give to someone who doesn't want to hang out in a version control system.  The goal here is to make everyone's life just a tiny bit easier, one `sed` command at a time. :heart:
