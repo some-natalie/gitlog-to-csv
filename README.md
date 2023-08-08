@@ -2,6 +2,8 @@
 
 Creates a CSV file of some `git log` data, useful for exporting to audit reports and other "chain of custody" type reports.  It can optionally create diffs to show line-by-line and file-by-file what changed at each commit and by whom, as well as if each commit was signed with a GPG certificate.
 
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/some-natalie/gitlog-to-csv/badge)](https://securityscorecards.dev/viewer/?uri=github.com/some-natalie/gitlog-to-csv)
+
 ## Inputs and Outputs
 
 Inputs
