@@ -4,6 +4,9 @@ Creates a CSV file of some `git log` data, useful for exporting to audit reports
 
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/some-natalie/gitlog-to-csv/badge)](https://securityscorecards.dev/viewer/?uri=github.com/some-natalie/gitlog-to-csv)
 
+> [!NOTE]
+> Only need the shell script?  Here you go - [git-history-report.sh](git-history-report.sh)
+
 ## Inputs and Outputs
 
 Inputs
@@ -57,17 +60,19 @@ Per the [git documentation](https://git-scm.com/docs/git-log#_pretty_formats), t
 | E | Signature cannot be checked (e.g. missing key) |
 | N | No signature |
 
-:information_source:  The runner that you use to execute this Action might need to be set up with your key management server.  This may mean you'll need to chat with your key management / identity management folks to get things set up on a private key server.
+> [!NOTE]
+> The runner that you use to execute this Action might need to be set up to trust your key management server.  This may mean you'll need to chat with your key management / identity management folks to get things set up on a private key server.
 
 ## GitHub Enterprise version compatibility
 
 Naturally, this works without any hitch on GitHub.com.  As a composite Action that calls other Actions, you'll need to be on at least GitHub Enterprise Server or GitHub AE version 3.3 to use this if you're not in GitHub.com.
 
-:information_source:  This references the tag `v3` of [`actions/checkout`](https://github.com/actions/checkout) and [`actions/upload-artifact`](https://github.com/actions/upload-artifact), which is (currently) beyond the version shipped bundled in GHES and GHAE.  Your enterprise administrator might need to [update](https://docs.github.com/en/enterprise-server@latest/admin/github-actions/managing-access-to-actions-from-githubcom/using-the-latest-version-of-the-official-bundled-actions) the bundled actions.  Alternatively, you can copy this repository to your GHES or GHAE instance and downgrade the versions of these dependencies in that process.
+> [!NOTE]
+> This references the tag `v4` of [`actions/checkout`](https://github.com/actions/checkout) and [`actions/upload-artifact`](https://github.com/actions/upload-artifact), which may be beyond the version shipped bundled in GHES.  Your enterprise administrator might need to [update](https://docs.github.com/en/enterprise-server@latest/admin/github-actions/managing-access-to-actions-from-githubcom/using-the-latest-version-of-the-official-bundled-actions) the bundled actions.  Alternatively, you can copy this repository to your GHES instance and downgrade the versions of these dependencies in that process.
 
 ## Using it without GitHub Actions
 
-:question:  Not using or can't use GitHub Actions?  Not a problem - the core logic of this report is a plain [bash script](https://github.com/some-natalie/gitlog-to-csv/blob/main/action.yml#L40-L81) that you can plug into your CI system of choice or run _ad hoc_.  To run on an arbitrary machine, you'll need the following:
+:question:  Not using or can't use GitHub Actions?  Not a problem - the core logic of this report is a plain [bash script](git-history-report.sh) that you can plug into your CI system of choice or run _ad hoc_.  To run on an arbitrary machine, you'll need the following:
 
 - BASH, of course
 - GNU `awk` and `sed`
