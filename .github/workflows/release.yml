@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest # use the GitHub hosted runners
     steps:
       - name: Upload the audit log
-        uses: some-natalie/gitlog-to-csv@v1
+        uses: some-natalie/gitlog-to-csv@v2
         with:
           repository: ${{ github.repository }} # run in the current repository
           branch: "main" # set this to the branch you want to audit
