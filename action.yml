@@ -80,7 +80,7 @@ runs:
           sed -i.bak '1s/.*/url,commit id,author,date,comment,changed files,lines added,lines deleted/' history.csv
         fi
     - name: "Upload that CSV file and diffs if needed"
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6.0.0
       with:
         name: "git-audit-log"
         path: |
