@@ -31,7 +31,7 @@ runs:
   using: "composite"
   steps:
     - name: "Checkout the repo"
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: ${{ inputs.repository }}
         token: ${{ inputs.token }}
